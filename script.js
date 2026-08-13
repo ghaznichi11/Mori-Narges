@@ -2,10 +2,9 @@
 // MORI × NARGES — Firebase-powered countdown + daily memories
 // ============================================================
 
-const FIREBASE_VERSION = "12.16.0";
-
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAT1d8iik8P956Kth52UwZM0jsba6uhaAEg",
+  apiKey: "AIzaSyAT16ui8k956Kth52UwZM0ojsba6uhaAEg",
   authDomain: "mori-narges.firebaseapp.com",
   projectId: "mori-narges",
   storageBucket: "mori-narges.firebasestorage.app",
