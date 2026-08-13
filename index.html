@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mori × Narges — Our Countdown</title>
+  <meta name="description" content="Every day closer to our next chapter.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="tiny">12 SEPTEMBER 2026 • THE DAY WE'VE BEEN WAITING FOR</div>
+      <h1>Mori <span>♥</span> Narges</h1>
+      <p class="subtitle">هر روز یک قدم نزدیک‌تر به باهم بودن ✨</p>
+
+      <div class="countdown" id="countdown" aria-live="polite">
+        <div><strong id="days">—</strong><small>روز</small></div>
+        <div><strong id="hours">—</strong><small>ساعت</small></div>
+        <div><strong id="minutes">—</strong><small>دقیقه</small></div>
+        <div><strong id="seconds">—</strong><small>ثانیه</small></div>
+      </div>
+
+      <div class="date">تا ۱۲ سپتامبر ۲۰۲۶ ❤️</div>
+    </section>
+
+    <section class="card today">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">TODAY'S MEMORY</div>
+          <h2>یادداشت امروز</h2>
+        </div>
+        <div class="day-pill" id="dayNumber">Day —</div>
+      </div>
+      <textarea id="noteInput" maxlength="500" placeholder="امروز برای نرگس چه چیزی می‌خواهی بنویسی؟"></textarea>
+      <div class="actions">
+        <button id="saveBtn">ذخیره یادداشت ❤️</button>
+        <span id="status"></span>
+      </div>
+      <p class="hint">نسخه‌ی فعلی یادداشت‌ها را روی همین مرورگر نگه می‌دارد. برای اینکه من و نرگس هر دو یک یادداشت مشترک ببینیم، در مرحله بعد Firebase را وصل می‌کنیم.</p>
+    </section>
+
+    <section class="card memories">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">OUR LITTLE ARCHIVE</div>
+          <h2>یادداشت‌های ما</h2>
+        </div>
+        <span class="count" id="noteCount">0 یادداشت</span>
+      </div>
+      <div id="notesList" class="notes-list">
+        <div class="empty">هنوز یادداشتی ثبت نشده… اولینش را بنویسید 🌙</div>
+      </div>
+    </section>
+
+    <footer>
+      Made with love by Mori × Narges · <span id="year"></span>
+    </footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
