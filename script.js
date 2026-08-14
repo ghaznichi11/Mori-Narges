@@ -16,8 +16,8 @@ const firebaseConfig = {
 };
 
 // Your two Firebase users
-const MORI_UID = "kVkFDNF1o0ckYNsBmdvjMrc5i7k2";
-const NARGES_UID = "ClAvSTSHHXQ0QdsnTmFoqFFYkr62";
+const MORI_UID = "ClAvSTSHHXQ0QdsnTmFoqFFYkr62";
+const NARGES_UID = "kVkFDNF1o0ckYNsBmdvjMrc5i7k2";
 
 // Flight / meeting countdown
 const TARGET_DATE = new Date("2026-09-12T12:15:00+02:00");
