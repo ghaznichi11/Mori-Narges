@@ -1,3 +1,187 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700&display=swap');
 :root{--bg:#0b0b12;--card:#14141e;--text:#f7f5f7;--muted:#a6a2ad;--accent:#ff5b86;--accent2:#a56bff;--line:#292834}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#2a1530 0,#0b0b12 45%);color:var(--text);font-family:Vazirmatn,DM Sans,sans-serif;min-height:100vh}.app{width:min(760px,92%);margin:auto;padding:40px 0 28px}.hero{text-align:center;padding:32px 10px 42px}.tiny{font:600 11px DM Sans,sans-serif;letter-spacing:2px;color:#b9b1c0;direction:ltr}.hero h1{font:700 clamp(42px,10vw,78px) DM Sans,sans-serif;direction:ltr;margin:18px 0 6px;letter-spacing:-3px}.hero h1 span{color:var(--accent);font-size:.7em}.subtitle{color:#d7d1da;font-size:18px;margin:0 0 30px}.countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;direction:ltr}.countdown>div{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:18px 8px;backdrop-filter:blur(10px)}.countdown strong{display:block;font:700 clamp(28px,7vw,48px) DM Sans,sans-serif}.countdown small{color:var(--muted);font-size:12px}.date{margin-top:18px;color:#d8a7b8;font-size:14px}.card{background:rgba(20,20,30,.9);border:1px solid var(--line);border-radius:26px;padding:24px;margin:16px 0;box-shadow:0 16px 50px rgba(0,0,0,.2)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:16px}.eyebrow{font:700 11px DM Sans,sans-serif;letter-spacing:1.7px;color:var(--accent);direction:ltr;text-align:right}.section-head h2{font-size:22px;margin:5px 0 16px}.day-pill,.count{font-size:12px;color:#ddd5df;background:#211d29;border:1px solid #332e3b;padding:8px 12px;border-radius:999px;white-space:nowrap}textarea{width:100%;min-height:130px;resize:vertical;background:#0e0e16;border:1px solid #302e3a;border-radius:17px;color:#fff;padding:15px;font:15px Vazirmatn,sans-serif;outline:none}textarea:focus{border-color:#75435b}.actions{display:flex;align-items:center;gap:12px;margin-top:12px}button{border:0;border-radius:13px;padding:12px 18px;background:linear-gradient(135deg,var(--accent),#ff7a68);color:#fff;font:600 14px Vazirmatn,sans-serif;cursor:pointer}button:active{transform:scale(.98)}#status{font-size:12px;color:#a9e5c0}.hint{font-size:11px;line-height:1.8;color:#77737e;margin:14px 2px 0}.notes-list{display:grid;gap:10px}.note{background:#0f0f17;border:1px solid #282631;border-radius:17px;padding:15px}.note .meta{font-size:11px;color:var(--accent);margin-bottom:7px}.note p{margin:0;line-height:1.9;font-size:14px}.empty{color:#77737e;text-align:center;padding:26px 8px}footer{text-align:center;color:#66616c;font:11px DM Sans,sans-serif;padding:22px;direction:ltr}@media(max-width:520px){.app{padding-top:20px}.hero{padding-bottom:25px}.countdown{gap:6px}.countdown>div{border-radius:15px;padding:13px 4px}.card{padding:18px;border-radius:21px}}
+/* =========================
+   MOBILE RESPONSIVE
+   ========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  padding: 12px;
+}
+
+.app {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.hero {
+  width: 100%;
+}
+
+.countdown {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.countdown > div {
+  min-width: 0;
+}
+
+.card {
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+  max-width: 100%;
+}
+
+.actions {
+  flex-wrap: wrap;
+}
+
+button {
+  max-width: 100%;
+}
+
+/* 📱 Phones */
+@media (max-width: 600px) {
+
+  body {
+    padding: 10px;
+  }
+
+  .app {
+    width: 100%;
+  }
+
+  .tiny {
+    font-size: 9px;
+    line-height: 1.7;
+  }
+
+  .hero {
+    padding: 18px 4px 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(30px, 10vw, 42px);
+    white-space: nowrap;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .countdown {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .countdown > div {
+    padding: 14px 5px;
+    border-radius: 16px;
+  }
+
+  .countdown strong {
+    font-size: clamp(30px, 11vw, 46px);
+  }
+
+  .countdown small {
+    font-size: 10px;
+  }
+
+  .date {
+    font-size: 12px;
+  }
+
+  .card {
+    padding: 16px;
+    margin: 12px 0;
+    border-radius: 20px;
+  }
+
+  .section-head {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .section-head h2 {
+    font-size: 19px;
+  }
+
+  .day-pill,
+  .count {
+    font-size: 10px;
+    padding: 7px 9px;
+  }
+
+  textarea {
+    min-height: 120px;
+    font-size: 14px;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  #status {
+    text-align: center;
+  }
+
+  .hint {
+    font-size: 10px;
+  }
+
+  footer {
+    font-size: 10px;
+    padding: 18px 5px;
+  }
+}
+
+/* 📱 Very small phones */
+@media (max-width: 380px) {
+
+  body {
+    padding: 7px;
+  }
+
+  .card {
+    padding: 13px;
+  }
+
+  .hero h1 {
+    font-size: 29px;
+  }
+
+  .countdown {
+    gap: 6px;
+  }
+
+  .countdown > div {
+    padding: 12px 3px;
+  }
+
+  .countdown strong {
+    font-size: 29px;
+  }
+}
