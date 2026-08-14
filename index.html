@@ -8,18 +8,32 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="app" id="privateApp" style="display: none;">
-    <section class="hero">
-      <div class="tiny">12 SEPTEMBER 2026 • THE DAY WE'VE BEEN WAITING FOR</div>
-      <h1>Mori <span>♥</span> Narges</h1>
-      <p class="subtitle">هر روز یک قدم نزدیک‌تر به باهم بودن ✨</p>
+ <div id="loginScreen" class="login-screen">
+  <div class="login-box">
+    <div class="login-heart">♥</div>
 
-      <div class="countdown" id="countdown" aria-live="polite">
-        <div><strong id="days">—</strong><small>روز</small></div>
-        <div><strong id="hours">—</strong><small>ساعت</small></div>
-        <div><strong id="minutes">—</strong><small>دقیقه</small></div>
-        <div><strong id="seconds">—</strong><small>ثانیه</small></div>
-      </div>
+    <h1>Mori × Narges</h1>
+    <p>این صفحه فقط برای ماست ❤️</p>
+
+    <input
+      type="email"
+      id="emailInput"
+      placeholder="ایمیل"
+      autocomplete="email"
+    >
+
+    <input
+      type="password"
+      id="passwordInput"
+      placeholder="رمز عبور"
+      autocomplete="current-password"
+    >
+
+    <button id="loginBtn">ورود ❤️</button>
+
+    <div id="loginStatus"></div>
+  </div>
+</div>
 
       <div class="date">تا ۱۲ سپتامبر ۲۰۲۶ ❤️</div>
     </section>
