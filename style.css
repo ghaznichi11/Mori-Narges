@@ -1011,14 +1011,6 @@ footer {
 
 
 /* ================= FOOTER MESSAGE ================= */
-
-.footer-message {
-  max-width: 620px;
-  margin: 18px auto 0;
-  text-align: center;
-  opacity: 0.72;
-}
-
 /* ================= FOOTER MARQUEE ================= */
 
 footer {
@@ -1030,49 +1022,105 @@ footer {
 }
 
 .footer-love {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   opacity: 0.8;
 }
 
-/* Moving subtitle */
+/* The visible window */
 
 .footer-marquee {
   width: 100%;
   overflow: hidden;
   position: relative;
 
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 10%,
-    black 90%,
-    transparent
-  );
-
   -webkit-mask-image: linear-gradient(
     to right,
-    transparent,
-    black 10%,
-    black 90%,
-    transparent
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
   );
 }
+
+/* Moving container */
 
 .footer-marquee-track {
   display: flex;
   width: max-content;
-  gap: 90px;
+  animation: moriMarquee 35s linear infinite;
+  will-change: transform;
+}
 
-  animation: footerMarquee 32s linear infinite;
+/* Each copy */
+
+.footer-marquee-content {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+  flex-shrink: 0;
+  padding-right: 90px;
+}
+
+/* Text */
+
+.footer-marquee-content span {
+  display: block;
+  flex-shrink: 0;
+
+  color: #a99da5;
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1.8;
 
   white-space: nowrap;
 }
 
-.footer-marquee-track span {
-  color: #a99da5;
-  font-size: 11px;
-  font-weight: 300;
-  letter-spacing: 0.1px;
+/* Continuous movement */
+
+@keyframes moriMarquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 650px) {
+
+  footer {
+    padding: 30px 0 12px;
+  }
+
+  .footer-love {
+    font-size: 10px;
+    margin-bottom: 16px;
+  }
+
+  .footer-marquee-content {
+    gap: 60px;
+    padding-right: 60px;
+  }
+
+  .footer-marquee-content span {
+    font-size: 9px;
+  }
+
+  .footer-marquee-track {
+    animation-duration: 28s;
+  }
 }
 
 @keyframes footerMarquee {
