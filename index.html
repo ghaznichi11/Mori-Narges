@@ -13,85 +13,6 @@
   >
 
   <link rel="stylesheet" href="style.css">
-
-  <style>
-    /* ================= AUTH ================= */
-
-    .auth-box {
-      margin-top: 22px;
-      padding: 24px;
-      border-radius: 22px;
-      background: rgba(5, 4, 7, 0.42);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .auth-box h3 {
-      margin: 0 0 8px;
-      font-size: 18px;
-    }
-
-    .auth-box p {
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    .auth-fields {
-      display: grid;
-      gap: 10px;
-    }
-
-    .auth-fields input {
-      width: 100%;
-      padding: 13px 15px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(5,4,7,.65);
-      color: var(--text);
-      font-family: inherit;
-      font-size: 14px;
-      outline: none;
-      direction: ltr;
-      text-align: left;
-    }
-
-    .auth-fields input:focus {
-      border-color: rgba(217,106,136,.5);
-      box-shadow: 0 0 0 4px rgba(217,106,136,.07);
-    }
-
-    .auth-fields button {
-      margin-top: 4px;
-      width: 100%;
-    }
-
-    #loginStatus {
-      display: block;
-      margin-top: 12px;
-      min-height: 20px;
-      text-align: center;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .logged-in-box {
-      margin-top: 18px;
-      padding: 13px 16px;
-      border-radius: 14px;
-      background: rgba(217,106,136,.07);
-      border: 1px solid rgba(217,106,136,.14);
-      color: var(--rose-soft);
-      font-size: 12px;
-      text-align: center;
-    }
-
-    @media (max-width: 650px) {
-      .auth-box {
-        padding: 18px;
-      }
-    }
-  </style>
 </head>
 
 <body>
@@ -188,67 +109,60 @@
       </div>
 
 
-      <!-- LOGIN -->
+      <!-- ================= LOGIN ================= -->
 
       <div
         id="loginScreen"
-        class="auth-box"
+        class="login-screen"
       >
 
-        <h3>
-          🔐 ورود به یادداشت‌های ما
-        </h3>
-
-        <p>
-          برای نوشتن و ذخیره کردن یادداشت، ابتدا وارد حساب خودت شو ❤️
-        </p>
-
-        <div class="auth-fields">
-
-          <input
-            type="email"
-            id="emailInput"
-            placeholder="Email"
-            autocomplete="email"
-          >
-
-          <input
-            type="password"
-            id="passwordInput"
-            placeholder="Password"
-            autocomplete="current-password"
-          >
-
-          <button
-            id="loginBtn"
-            type="button"
-          >
-            ورود ❤️
-          </button>
-
+        <div class="login-title">
+          ورود برای نوشتن یادداشت ❤️
         </div>
 
-        <span id="loginStatus"></span>
+        <input
+          id="emailInput"
+          type="email"
+          placeholder="ایمیل"
+          autocomplete="email"
+        >
+
+        <input
+          id="passwordInput"
+          type="password"
+          placeholder="رمز عبور"
+          autocomplete="current-password"
+        >
+
+        <button
+          id="loginBtn"
+          type="button"
+        >
+          ورود ❤️
+        </button>
+
+        <div
+          id="loginStatus"
+          class="login-status"
+        ></div>
 
       </div>
 
 
-      <!-- NOTE EDITOR -->
+      <!-- ================= NOTE EDITOR ================= -->
 
       <div
         id="noteEditor"
+        class="note-editor"
         style="display:none;"
       >
-
-        <div class="logged-in-box">
-          ❤️ شما وارد شده‌اید. حالا می‌توانید یادداشت امروز را بنویسید.
-        </div>
 
         <textarea
           id="noteInput"
           maxlength="500"
           placeholder="امروز چه چیزی می‌خواهی بنویسی؟"
         ></textarea>
+
 
         <div class="actions">
 
@@ -259,16 +173,29 @@
             ذخیره یادداشت ❤️
           </button>
 
+          <button
+            id="logoutBtn"
+            type="button"
+          >
+            خروج
+          </button>
+
           <span id="status"></span>
 
         </div>
 
       </div>
 
+
+      <p class="hint">
+        برای اینکه من و نرگس بتوانیم یادداشت‌هایمان را با هم ببینیم،
+        هر کدام با حساب خودمان وارد می‌شویم ❤️
+      </p>
+
     </section>
 
 
-    <!-- ================= MEMORIES ================= -->
+    <!-- ================= OUR MEMORIES ================= -->
 
     <section class="card memories">
 
@@ -302,7 +229,7 @@
       >
 
         <div class="empty">
-          هنوز یادداشتی ثبت نشده… اولینش را بنویسید 🌙
+          برای دیدن یادداشت‌های ما وارد شوید 🌙
         </div>
 
       </div>
@@ -321,14 +248,12 @@
 
         <p>
           ❤️ این شمارش معکوس را ساختیم تا هر روز به آن نگاه کنیم،
-          خوشحال شویم و بدانیم که با گذشت هر روز،
-          یک قدم به باهم بودن نزدیک‌تر می‌شویم.
+          خوشحال شویم و از اینکه هر روز یک قدم به باهم بودن نزدیک‌تر می‌شویم لذت ببریم.
         </p>
 
         <p>
           ❤️ We made this countdown to look at every day,
-          knowing that with each passing day,
-          we are one step closer to being together.
+          knowing that with each passing day, we are one step closer to being together.
         </p>
 
         <p>
