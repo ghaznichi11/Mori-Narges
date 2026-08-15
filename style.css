@@ -35,26 +35,18 @@ body {
   font-family: "Vazirmatn", sans-serif;
   color: var(--text);
 
-  background:
+  background-image:
     linear-gradient(
-      rgba(13, 10, 16, 0.72),
-      rgba(13, 10, 16, 0.82)
+      rgba(13, 10, 16, 0.68),
+      rgba(13, 10, 16, 0.78)
     ),
-    url("couple-bg.jpg") center center / cover fixed no-repeat;
+    url("./couple-bg.jpg");
 
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 }
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at center, transparent 35%, rgba(0,0,0,.35) 100%);
-  z-index: -1;
-}
-
 .app {
   width: min(1050px, calc(100% - 32px));
   margin: auto;
