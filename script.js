@@ -8,11 +8,22 @@ const TARGET_DATE = new Date("2026-09-12T12:15:00+02:00");
 
 let currentUser = null;
 
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
 function getEl(id) {
   return document.getElementById(id);
 }
 
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
 function showStatus(message, success = true) {
+
   const status = getEl("status");
 
   if (!status) return;
@@ -25,7 +36,13 @@ function showStatus(message, success = true) {
   }, 3500);
 }
 
+
+/* =========================================================
+   COUNTDOWN
+   ========================================================= */
+
 function updateCountdown() {
+
   const distance = TARGET_DATE.getTime() - Date.now();
 
   const daysEl = getEl("days");
@@ -33,18 +50,30 @@ function updateCountdown() {
   const minutesEl = getEl("minutes");
   const secondsEl = getEl("seconds");
 
+  if (!daysEl || !hoursEl || !minutesEl || !secondsEl) {
+    return;
+  }
+
   if (distance <= 0) {
+
     daysEl.textContent = "0";
     hoursEl.textContent = "00";
     minutesEl.textContent = "00";
     secondsEl.textContent = "00";
+
     return;
   }
 
   const days = Math.floor(distance / 86400000);
-  const hours = Math.floor((distance % 86400000) / 3600000);
-  const minutes = Math.floor((distance % 3600000) / 60000);
-  const seconds = Math.floor((distance % 60000) / 1000);
+
+  const hours =
+    Math.floor((distance % 86400000) / 3600000);
+
+  const minutes =
+    Math.floor((distance % 3600000) / 60000);
+
+  const seconds =
+    Math.floor((distance % 60000) / 1000);
 
   daysEl.textContent = String(days).padStart(2, "0");
   hoursEl.textContent = String(hours).padStart(2, "0");
@@ -52,120 +81,283 @@ function updateCountdown() {
   secondsEl.textContent = String(seconds).padStart(2, "0");
 }
 
-function updateLoginUI(user) {
-  const loginScreen = getEl("loginScreen");
 
-  if (!loginScreen) return;
+/* =========================================================
+   DAY NUMBER
+   ========================================================= */
 
-  loginScreen.style.display = user ? "none" : "flex";
+function updateDayNumber() {
+
+  const dayNumber = getEl("dayNumber");
+
+  if (!dayNumber) return;
+
+  const startDate = new Date("2026-08-13T00:00:00+02:00");
+
+  const now = new Date();
+
+  const difference =
+    now.getTime() - startDate.getTime();
+
+  const day =
+    Math.max(
+      1,
+      Math.floor(difference / 86400000) + 1
+    );
+
+  dayNumber.textContent = `Day ${day}`;
 }
 
+
+/* =========================================================
+   LOGIN UI
+   ========================================================= */
+
+function updateLoginUI(user) {
+
+  const loginScreen = getEl("loginScreen");
+  const noteEditor = getEl("noteEditor");
+
+  if (!loginScreen || !noteEditor) {
+    return;
+  }
+
+  if (user) {
+
+    loginScreen.style.display = "none";
+    noteEditor.style.display = "block";
+
+  } else {
+
+    loginScreen.style.display = "block";
+    noteEditor.style.display = "none";
+
+  }
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
 async function loginUser() {
-  const email = getEl("emailInput").value.trim();
-  const password = getEl("passwordInput").value;
+
+  const emailInput = getEl("emailInput");
+  const passwordInput = getEl("passwordInput");
   const loginStatus = getEl("loginStatus");
 
-  if (!email || !password) {
-    loginStatus.textContent = "ایمیل و رمز را وارد کن.";
-    loginStatus.style.color = "#ff9d9d";
+  if (!emailInput || !passwordInput || !loginStatus) {
     return;
   }
 
-  const { data, error } = await db.auth.signInWithPassword({
-    email,
-    password
-  });
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+
+  loginStatus.textContent = "";
+
+  if (!email || !password) {
+
+    loginStatus.textContent =
+      "ایمیل و رمز را وارد کن.";
+
+    loginStatus.style.color = "#ff9d9d";
+
+    return;
+  }
+
+
+  loginStatus.textContent = "در حال ورود...";
+
+  loginStatus.style.color = "#a99da5";
+
+
+  const { data, error } =
+    await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
 
   if (error) {
-    loginStatus.textContent = "ورود ناموفق بود. ایمیل یا رمز را بررسی کن.";
+
+    console.error(error);
+
+    loginStatus.textContent =
+      "ورود ناموفق بود. ایمیل یا رمز را بررسی کن.";
+
     loginStatus.style.color = "#ff9d9d";
+
     return;
   }
 
+
   currentUser = data.user;
-  loginStatus.textContent = "ورود موفق بود ❤️";
+
+
+  loginStatus.textContent =
+    "ورود موفق بود ❤️";
+
   loginStatus.style.color = "#9dffbc";
 
+
   updateLoginUI(currentUser);
+
   await loadMessages();
 }
 
+
+/* =========================================================
+   LOAD MESSAGES
+   ========================================================= */
+
 async function loadMessages() {
+
   const notesList = getEl("notesList");
   const noteCount = getEl("noteCount");
+
+  if (!notesList || !noteCount) {
+    return;
+  }
+
 
   const { data, error } = await db
     .from("messages")
     .select("*")
-    .order("created_at", { ascending: true });
+    .order("created_at", {
+      ascending: true
+    });
+
 
   if (error) {
+
     console.error(error);
+
     return;
   }
 
-  noteCount.textContent = `${data.length} یادداشت`;
+
+  noteCount.textContent =
+    `${data.length} یادداشت`;
+
 
   if (data.length === 0) {
+
     notesList.innerHTML = `
       <div class="empty">
         هنوز یادداشتی ثبت نشده… اولینش را بنویسید 🌙
       </div>
     `;
+
     return;
   }
 
-  notesList.innerHTML = data.map(message => `
-    <div class="note-card">
-      <div class="note-date">
-        ${message.sender || "❤️"}
+
+  notesList.innerHTML =
+    data.map(message => `
+
+      <div class="note-card">
+
+        <div class="note-date">
+          ${escapeHtml(message.sender || "❤️")}
+        </div>
+
+        <div class="note-text">
+          ${escapeHtml(message.content || "")}
+        </div>
+
       </div>
-      <div class="note-text">
-        ${escapeHtml(message.content || "")}
-      </div>
-    </div>
-  `).join("");
+
+    `).join("");
 }
 
+
+/* =========================================================
+   SAVE MESSAGE
+   ========================================================= */
+
 async function saveMessage() {
+
   if (!currentUser) {
-    showStatus("اول وارد حساب خودت شو ❤️", false);
+
+    showStatus(
+      "اول وارد حساب خودت شو ❤️",
+      false
+    );
+
     return;
   }
+
 
   const noteInput = getEl("noteInput");
-  const text = noteInput.value.trim();
 
-  if (!text) {
-    showStatus("اول چیزی برای امروز بنویس ❤️", false);
+  if (!noteInput) {
     return;
   }
 
+
+  const text =
+    noteInput.value.trim();
+
+
+  if (!text) {
+
+    showStatus(
+      "اول چیزی برای امروز بنویس ❤️",
+      false
+    );
+
+    return;
+  }
+
+
   const sender =
-    currentUser.email?.toLowerCase().includes("narges")
+    currentUser.email
+      ?.toLowerCase()
+      .includes("narges")
       ? "Narges ❤️"
       : "Mori ❤️";
 
-  const { error } = await db
-    .from("messages")
-    .insert({
-      content: text,
-      sender: sender
-    });
+
+  const { error } =
+    await db
+      .from("messages")
+      .insert({
+        content: text,
+        sender: sender
+      });
+
 
   if (error) {
+
     console.error(error);
-    showStatus("ذخیره انجام نشد.", false);
+
+    showStatus(
+      "ذخیره انجام نشد.",
+      false
+    );
+
     return;
   }
 
+
   noteInput.value = "";
-  showStatus("یادداشت آنلاین ذخیره شد ❤️☁️");
+
+
+  showStatus(
+    "یادداشت آنلاین ذخیره شد ❤️☁️"
+  );
+
 
   await loadMessages();
 }
 
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
 function escapeHtml(value) {
+
   return String(value)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -174,47 +366,137 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
 
-  const loginButton = getEl("loginBtn");
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
 
-  if (loginButton) {
-    loginButton.addEventListener("click", loginUser);
-  }
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
 
-  const saveButton = getEl("saveBtn");
+    /* Countdown */
 
-  if (saveButton) {
-    saveButton.addEventListener("click", saveMessage);
-  }
+    updateCountdown();
 
-  const yearEl = getEl("year");
+    setInterval(
+      updateCountdown,
+      1000
+    );
 
-  if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
-  }
 
-  const { data } = await db.auth.getSession();
+    /* Day */
 
-  currentUser = data.session?.user || null;
+    updateDayNumber();
 
-  updateLoginUI(currentUser);
 
-  if (currentUser) {
-    await loadMessages();
-  }
+    /* Year */
 
-  db.auth.onAuthStateChange((_event, session) => {
-    currentUser = session?.user || null;
-    updateLoginUI(currentUser);
+    const yearEl = getEl("year");
+
+    if (yearEl) {
+      yearEl.textContent =
+        new Date().getFullYear();
+    }
+
+
+    /* Login button */
+
+    const loginButton =
+      getEl("loginBtn");
+
+    if (loginButton) {
+
+      loginButton.addEventListener(
+        "click",
+        loginUser
+      );
+
+    }
+
+
+    /* Save button */
+
+    const saveButton =
+      getEl("saveBtn");
+
+    if (saveButton) {
+
+      saveButton.addEventListener(
+        "click",
+        saveMessage
+      );
+
+    }
+
+
+    /* Enter key for password */
+
+    const passwordInput =
+      getEl("passwordInput");
+
+    if (passwordInput) {
+
+      passwordInput.addEventListener(
+        "keydown",
+        event => {
+
+          if (event.key === "Enter") {
+            loginUser();
+          }
+
+        }
+      );
+
+    }
+
+
+    /* Check existing session */
+
+    const { data } =
+      await db.auth.getSession();
+
+
+    currentUser =
+      data.session?.user || null;
+
+
+    updateLoginUI(
+      currentUser
+    );
+
+
+    /* Load notes if already logged in */
 
     if (currentUser) {
-      loadMessages();
-      updateCountdown();
-setInterval(updateCountdown, 1000);
-      const TARGET_DATE = new Date("2026-09-12T12:15:00+02:00");
+
+      await loadMessages();
+
     }
-  });
-});
+
+
+    /* Auth state listener */
+
+    db.auth.onAuthStateChange(
+      async (_event, session) => {
+
+        currentUser =
+          session?.user || null;
+
+
+        updateLoginUI(
+          currentUser
+        );
+
+
+        if (currentUser) {
+
+          await loadMessages();
+
+        }
+
+      }
+    );
+
+  }
+);
