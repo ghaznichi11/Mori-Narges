@@ -1549,3 +1549,55 @@ button {
   }
 
 }
+/* =========================================
+   MOBILE BUTTONS — SAVE & LOGOUT
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  /* Container of Save + Logout buttons */
+  .actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  /* Both buttons */
+  .actions button {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  /* Status message */
+  #status {
+    width: 100%;
+    text-align: center;
+    order: 3;
+    margin-top: 2px;
+  }
+
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+   ========================================= */
+
+@media (max-width: 380px) {
+
+  .actions {
+    gap: 8px;
+  }
+
+  .actions button {
+    font-size: 13px;
+    padding: 12px 8px;
+  }
+
+}
