@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,44 +13,92 @@
   >
 
   <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<script>
-function countdown() {
-  const target = new Date("2026-09-12T12:15:00+02:00").getTime();
 
-  function update() {
-    const now = new Date().getTime();
-    const distance = target - now;
+  <style>
+    /* ================= AUTH ================= */
 
-    const days = document.getElementById("days");
-    const hours = document.getElementById("hours");
-    const minutes = document.getElementById("minutes");
-    const seconds = document.getElementById("seconds");
-
-    if (!days || !hours || !minutes || !seconds) return;
-
-    if (distance <= 0) {
-      days.textContent = "0";
-      hours.textContent = "00";
-      minutes.textContent = "00";
-      seconds.textContent = "00";
-      return;
+    .auth-box {
+      margin-top: 22px;
+      padding: 24px;
+      border-radius: 22px;
+      background: rgba(5, 4, 7, 0.42);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    days.textContent = Math.floor(distance / (1000 * 60 * 60 * 24));
-    hours.textContent = Math.floor((distance / (1000 * 60 * 60)) % 24).toString().padStart(2, "0");
-    minutes.textContent = Math.floor((distance / (1000 * 60)) % 60).toString().padStart(2, "0");
-    seconds.textContent = Math.floor((distance / 1000) % 60).toString().padStart(2, "0");
-  }
+    .auth-box h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
 
-  update();
-  setInterval(update, 1000);
-}
+    .auth-box p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
 
-document.addEventListener("DOMContentLoaded", countdown);
-</script>
+    .auth-fields {
+      display: grid;
+      gap: 10px;
+    }
+
+    .auth-fields input {
+      width: 100%;
+      padding: 13px 15px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(5,4,7,.65);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .auth-fields input:focus {
+      border-color: rgba(217,106,136,.5);
+      box-shadow: 0 0 0 4px rgba(217,106,136,.07);
+    }
+
+    .auth-fields button {
+      margin-top: 4px;
+      width: 100%;
+    }
+
+    #loginStatus {
+      display: block;
+      margin-top: 12px;
+      min-height: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .logged-in-box {
+      margin-top: 18px;
+      padding: 13px 16px;
+      border-radius: 14px;
+      background: rgba(217,106,136,.07);
+      border: 1px solid rgba(217,106,136,.14);
+      color: var(--rose-soft);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 650px) {
+      .auth-box {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
   <main class="app">
+
+    <!-- ================= HERO ================= -->
 
     <section class="hero">
 
@@ -102,16 +149,18 @@ document.addEventListener("DOMContentLoaded", countdown);
     </section>
 
 
+    <!-- ================= COUPLE ================= -->
+
     <section class="couple-section">
-
-
 
       <div class="couple-heart">
         ♥
-   
+      </div>
 
     </section>
 
+
+    <!-- ================= TODAY'S MEMORY ================= -->
 
     <section class="card today">
 
@@ -139,28 +188,87 @@ document.addEventListener("DOMContentLoaded", countdown);
       </div>
 
 
-      <textarea
-        id="noteInput"
-        maxlength="500"
-        placeholder="امروز چه چیزی می‌خواهی بنویسی؟"
-      ></textarea>
+      <!-- LOGIN -->
 
+      <div
+        id="loginScreen"
+        class="auth-box"
+      >
 
-      <div class="actions">
+        <h3>
+          🔐 ورود به یادداشت‌های ما
+        </h3>
 
-        <button id="saveBtn">
-          ذخیره یادداشت ❤️
-        </button>
+        <p>
+          برای نوشتن و ذخیره کردن یادداشت، ابتدا وارد حساب خودت شو ❤️
+        </p>
 
-        <span id="status"></span>
+        <div class="auth-fields">
+
+          <input
+            type="email"
+            id="emailInput"
+            placeholder="Email"
+            autocomplete="email"
+          >
+
+          <input
+            type="password"
+            id="passwordInput"
+            placeholder="Password"
+            autocomplete="current-password"
+          >
+
+          <button
+            id="loginBtn"
+            type="button"
+          >
+            ورود ❤️
+          </button>
+
+        </div>
+
+        <span id="loginStatus"></span>
 
       </div>
 
 
-  
+      <!-- NOTE EDITOR -->
+
+      <div
+        id="noteEditor"
+        style="display:none;"
+      >
+
+        <div class="logged-in-box">
+          ❤️ شما وارد شده‌اید. حالا می‌توانید یادداشت امروز را بنویسید.
+        </div>
+
+        <textarea
+          id="noteInput"
+          maxlength="500"
+          placeholder="امروز چه چیزی می‌خواهی بنویسی؟"
+        ></textarea>
+
+        <div class="actions">
+
+          <button
+            id="saveBtn"
+            type="button"
+          >
+            ذخیره یادداشت ❤️
+          </button>
+
+          <span id="status"></span>
+
+        </div>
+
+      </div>
 
     </section>
 
+
+    <!-- ================= MEMORIES ================= -->
 
     <section class="card memories">
 
@@ -202,28 +310,47 @@ document.addEventListener("DOMContentLoaded", countdown);
     </section>
 
 
-<footer>
+    <!-- ================= FOOTER ================= -->
 
-  Made with love by Mori × Narges ·
-  <span id="year"></span>
+    <footer>
 
-  <div class="footer-message">
+      Made with love by Mori × Narges ·
+      <span id="year"></span>
 
- 
+      <div class="footer-message">
 
-    <p>
-      ❤️ Vi skapade den här nedräkningen för att titta på den varje dag
-      och glädjas åt att vi för varje dag kommer ett steg närmare varandra. 2026/08/13
-    </p>
+        <p>
+          ❤️ این شمارش معکوس را ساختیم تا هر روز به آن نگاه کنیم،
+          خوشحال شویم و بدانیم که با گذشت هر روز،
+          یک قدم به باهم بودن نزدیک‌تر می‌شویم.
+        </p>
 
-  </div>
+        <p>
+          ❤️ We made this countdown to look at every day,
+          knowing that with each passing day,
+          we are one step closer to being together.
+        </p>
 
-</footer>
+        <p>
+          ❤️ Vi skapade den här nedräkningen för att titta på den varje dag
+          och glädjas åt att vi för varje dag kommer ett steg närmare varandra.
+        </p>
+
+      </div>
+
+    </footer>
 
   </main>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- ================= SUPABASE ================= -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- ================= OUR SCRIPT ================= -->
+
+  <script src="script.js"></script>
+
 </body>
 
 </html>
