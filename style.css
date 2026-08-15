@@ -1010,9 +1010,38 @@ footer {
   }
 
 
-  footer {
-    padding-top: 30px;
+/* ================= FOOTER MESSAGE ================= */
+
+.footer-message {
+  max-width: 620px;
+  margin: 18px auto 0;
+  text-align: center;
+  opacity: 0.72;
+}
+
+.footer-message p {
+  margin: 6px 0;
+  color: #a99da5;
+  font-size: 11px;
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+.footer-message p:first-child {
+  color: #d9a0b0;
+}
+
+@media (max-width: 650px) {
+  .footer-message {
+    padding: 0 12px;
+    margin-top: 15px;
   }
+
+  .footer-message p {
+    font-size: 10px;
+    line-height: 1.9;
+  }
+}
 }
 
 
