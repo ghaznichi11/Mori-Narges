@@ -118,113 +118,16 @@ function updateCountdown() {
 // Login UI
 // ------------------------------------------------------------
 
-function createLoginPanel() {
-  if (getEl("firebaseLoginPanel")) return;
-
-  const todayCard = document.querySelector(".today");
-
-  if (!todayCard) return;
-
-  const panel = document.createElement("div");
-
-  panel.id = "firebaseLoginPanel";
-
-  panel.style.cssText = `
-    margin-bottom:20px;
-    padding:18px;
-    border-radius:18px;
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(255,255,255,.04);
-  `;
-
-  panel.innerHTML = `
-    <div style="font-size:12px;letter-spacing:.12em;color:#aaa;margin-bottom:8px;">
-      PRIVATE ROOM 🔐
-    </div>
-
-    <div id="loginMessage" style="font-size:14px;color:#ddd;margin-bottom:14px;">
-      برای نوشتن خاطره روزانه وارد حساب خودت شو ❤️
-    </div>
-
-    <div id="loginFormArea">
-      <input
-        id="loginEmail"
-        type="email"
-        placeholder="Email"
-        autocomplete="email"
-        style="
-          width:100%;
-          padding:12px;
-          margin-bottom:8px;
-          border-radius:10px;
-          border:1px solid rgba(255,255,255,.12);
-          background:rgba(0,0,0,.2);
-          color:white;
-        "
-      >
-
-      <input
-        id="loginPassword"
-        type="password"
-        placeholder="Password"
-        autocomplete="current-password"
-        style="
-          width:100%;
-          padding:12px;
-          margin-bottom:10px;
-          border-radius:10px;
-          border:1px solid rgba(255,255,255,.12);
-          background:rgba(0,0,0,.2);
-          color:white;
-        "
-      >
-
-      <button
-        id="loginBtn"
-        type="button"
-        style="
-          padding:11px 16px;
-          border:0;
-          border-radius:10px;
-          cursor:pointer;
-        "
-      >
-        ورود ❤️
-      </button>
-    </div>
-
-    <div id="loggedInArea" style="display:none;">
-      <span id="loggedInText"></span>
-      <button
-        id="logoutBtn"
-        type="button"
-        style="
-          margin-right:10px;
-          padding:8px 12px;
-          border:1px solid rgba(255,255,255,.15);
-          border-radius:9px;
-          background:rgba(255,255,255,.06);
-          color:white;
-          cursor:pointer;
-        "
-      >
-        خروج
-      </button>
-    </div>
-  `;
-
-  todayCard.prepend(panel);
-
-  getEl("loginBtn").addEventListener("click", loginUser);
-  getEl("logoutBtn").addEventListener("click", logoutUser);
-}
-
 async function loginUser() {
-  const email = getEl("loginEmail")?.value.trim();
-  const password = getEl("loginPassword")?.value;
+  const email = getEl("emailInput")?.value.trim();
+  const password = getEl("passwordInput")?.value;
+  const loginStatus = getEl("loginStatus");
 
   if (!email || !password) {
-    showStatus("ایمیل و رمز را وارد کن.", false);
+    if (loginStatus) {
+      loginStatus.textContent = "ایمیل و رمز را وارد کن.";
+      loginStatus.style.color = "#ff9d9d";
+    }
     return;
   }
 
@@ -235,14 +138,18 @@ async function loginUser() {
 
     await signInWithEmailAndPassword(firebaseAuth, email, password);
 
-    showStatus("ورود موفق بود ❤️");
+    if (loginStatus) {
+      loginStatus.textContent = "ورود موفق بود ❤️";
+      loginStatus.style.color = "#9dffbc";
+    }
   } catch (error) {
     console.error(error);
 
-    showStatus(
-      "ورود ناموفق بود. ایمیل یا رمز را بررسی کن.",
-      false
-    );
+    if (loginStatus) {
+      loginStatus.textContent =
+        "ورود ناموفق بود. ایمیل یا رمز را بررسی کن.";
+      loginStatus.style.color = "#ff9d9d";
+    }
   }
 }
 
@@ -253,40 +160,21 @@ async function logoutUser() {
     );
 
     await signOut(firebaseAuth);
-
-    showStatus("از حساب خارج شدی.");
   } catch (error) {
     console.error(error);
   }
 }
 
 function updateLoginUI(user) {
-  const formArea = getEl("loginFormArea");
-  const loggedInArea = getEl("loggedInArea");
-  const loggedInText = getEl("loggedInText");
-  const loginMessage = getEl("loginMessage");
+  const loginScreen = getEl("loginScreen");
 
-  if (!formArea || !loggedInArea) return;
+  if (!loginScreen) return;
 
-  if (!user) {
-    formArea.style.display = "block";
-    loggedInArea.style.display = "none";
-    loginMessage.textContent =
-      "برای نوشتن خاطره روزانه وارد حساب خودت شو ❤️";
-
-    return;
+  if (user) {
+    loginScreen.style.display = "none";
+  } else {
+    loginScreen.style.display = "flex";
   }
-
-  const name = getUserName(user.uid);
-
-  formArea.style.display = "none";
-  loggedInArea.style.display = "block";
-
-  loggedInText.textContent =
-    `وارد شدی به عنوان ${name} ❤️`;
-
-  loginMessage.textContent =
-    "حالا می‌توانی جواب خودت را برای خاطره امروز بنویسی.";
 }
 
 // ------------------------------------------------------------
@@ -606,7 +494,15 @@ document.addEventListener(
       1000
     );
 
-    createLoginPanel();
+    const loginButton =
+      getEl("loginBtn");
+
+    if (loginButton) {
+      loginButton.addEventListener(
+        "click",
+        loginUser
+      );
+    }
 
     const saveButton =
       getEl("saveBtn");
