@@ -1,26 +1,58 @@
-const SUPABASE_URL = "https://tjgwnqfrfggegivekhdj.supabase.co";
-const SUPABASE_KEY = "sb_publishable_8Tv1WNTJamWcA389ZifCRA_ZbKku1xT";
+/* =========================================================
+   MORI × NARGES
+   Countdown + Supabase Authentication + Memories
+   ========================================================= */
+
+
+/* ================= SUPABASE ================= */
+
+const SUPABASE_URL =
+  "https://tjgwnqfrfggegivekhdj.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_8Tv1WNTJamWcA389ZifCRA_ZbKku1xT";
+
 
 const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const TARGET_DATE = new Date("2026-09-12T12:15:00+02:00");
+const db = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+/* ================= SETTINGS ================= */
+
+const TARGET_DATE =
+  new Date("2026-09-12T12:15:00+02:00");
+
+
+/*
+  اگر روز شروع شمارش را می‌دانی،
+  این تاریخ را تغییر بده.
+
+  فعلاً فقط برای نمایش Day استفاده می‌شود.
+*/
+
+const START_DATE =
+  new Date("2026-08-01T00:00:00+02:00");
+
+
+/* ================= STATE ================= */
 
 let currentUser = null;
 
+let countdownInterval = null;
 
-/* =========================================================
-   HELPERS
-   ========================================================= */
+
+/* ================= HELPERS ================= */
 
 function getEl(id) {
   return document.getElementById(id);
 }
 
 
-/* =========================================================
-   STATUS
-   ========================================================= */
+/* ================= STATUS ================= */
 
 function showStatus(message, success = true) {
 
@@ -29,208 +61,446 @@ function showStatus(message, success = true) {
   if (!status) return;
 
   status.textContent = message;
-  status.style.color = success ? "#9dffbc" : "#ff9d9d";
+
+  status.style.color =
+    success
+      ? "#9dffbc"
+      : "#ff9d9d";
 
   setTimeout(() => {
-    status.textContent = "";
+
+    if (status) {
+      status.textContent = "";
+    }
+
   }, 3500);
 }
 
 
-/* =========================================================
-   COUNTDOWN
-   ========================================================= */
+/* ================= LOGIN STATUS ================= */
+
+function showLoginStatus(message, success = false) {
+
+  const loginStatus =
+    getEl("loginStatus");
+
+  if (!loginStatus) return;
+
+  loginStatus.textContent = message;
+
+  loginStatus.style.color =
+    success
+      ? "#9dffbc"
+      : "#ff9d9d";
+}
+
+
+/* ================= COUNTDOWN ================= */
 
 function updateCountdown() {
 
-  const distance = TARGET_DATE.getTime() - Date.now();
+  const daysEl =
+    getEl("days");
 
-  const daysEl = getEl("days");
-  const hoursEl = getEl("hours");
-  const minutesEl = getEl("minutes");
-  const secondsEl = getEl("seconds");
+  const hoursEl =
+    getEl("hours");
 
-  if (!daysEl || !hoursEl || !minutesEl || !secondsEl) {
+  const minutesEl =
+    getEl("minutes");
+
+  const secondsEl =
+    getEl("seconds");
+
+
+  if (
+    !daysEl ||
+    !hoursEl ||
+    !minutesEl ||
+    !secondsEl
+  ) {
     return;
   }
+
+
+  const distance =
+    TARGET_DATE.getTime() - Date.now();
+
 
   if (distance <= 0) {
 
     daysEl.textContent = "0";
+
     hoursEl.textContent = "00";
+
     minutesEl.textContent = "00";
+
     secondsEl.textContent = "00";
 
     return;
   }
 
-  const days = Math.floor(distance / 86400000);
+
+  const days =
+    Math.floor(
+      distance / 86400000
+    );
+
 
   const hours =
-    Math.floor((distance % 86400000) / 3600000);
+    Math.floor(
+      (distance % 86400000) /
+      3600000
+    );
+
 
   const minutes =
-    Math.floor((distance % 3600000) / 60000);
+    Math.floor(
+      (distance % 3600000) /
+      60000
+    );
+
 
   const seconds =
-    Math.floor((distance % 60000) / 1000);
+    Math.floor(
+      (distance % 60000) /
+      1000
+    );
 
-  daysEl.textContent = String(days).padStart(2, "0");
-  hoursEl.textContent = String(hours).padStart(2, "0");
-  minutesEl.textContent = String(minutes).padStart(2, "0");
-  secondsEl.textContent = String(seconds).padStart(2, "0");
+
+  daysEl.textContent =
+    String(days).padStart(2, "0");
+
+
+  hoursEl.textContent =
+    String(hours).padStart(2, "0");
+
+
+  minutesEl.textContent =
+    String(minutes).padStart(2, "0");
+
+
+  secondsEl.textContent =
+    String(seconds).padStart(2, "0");
 }
 
 
-/* =========================================================
-   DAY NUMBER
-   ========================================================= */
+/* ================= START COUNTDOWN ================= */
+
+function startCountdown() {
+
+  updateCountdown();
+
+
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+  }
+
+
+  countdownInterval =
+    setInterval(
+      updateCountdown,
+      1000
+    );
+}
+
+
+/* ================= DAY NUMBER ================= */
 
 function updateDayNumber() {
 
-  const dayNumber = getEl("dayNumber");
+  const dayNumber =
+    getEl("dayNumber");
 
   if (!dayNumber) return;
 
-  const startDate = new Date("2026-08-13T00:00:00+02:00");
 
-  const now = new Date();
+  const now =
+    new Date();
+
+
+  const start =
+    new Date(START_DATE);
+
 
   const difference =
-    now.getTime() - startDate.getTime();
+    now.getTime() -
+    start.getTime();
 
-  const day =
+
+  const daysPassed =
     Math.max(
       1,
-      Math.floor(difference / 86400000) + 1
+      Math.floor(
+        difference / 86400000
+      ) + 1
     );
 
-  dayNumber.textContent = `Day ${day}`;
+
+  dayNumber.textContent =
+    `Day ${daysPassed}`;
 }
 
 
-/* =========================================================
-   LOGIN UI
-   ========================================================= */
+/* ================= LOGIN UI ================= */
 
 function updateLoginUI(user) {
 
-  const loginScreen = getEl("loginScreen");
-  const noteEditor = getEl("noteEditor");
+  const loginScreen =
+    getEl("loginScreen");
+
+  const noteEditor =
+    getEl("noteEditor");
+
 
   if (!loginScreen || !noteEditor) {
     return;
   }
 
+
   if (user) {
 
-    loginScreen.style.display = "none";
-    noteEditor.style.display = "block";
+    /* User is logged in */
+
+    loginScreen.style.display =
+      "none";
+
+    noteEditor.style.display =
+      "block";
+
 
   } else {
 
-    loginScreen.style.display = "block";
-    noteEditor.style.display = "none";
+    /* User is logged out */
+
+    loginScreen.style.display =
+      "block";
+
+    noteEditor.style.display =
+      "none";
 
   }
 }
 
 
-/* =========================================================
-   LOGIN
-   ========================================================= */
+/* ================= LOGIN ================= */
 
 async function loginUser() {
 
-  const emailInput = getEl("emailInput");
-  const passwordInput = getEl("passwordInput");
-  const loginStatus = getEl("loginStatus");
+  const emailInput =
+    getEl("emailInput");
 
-  if (!emailInput || !passwordInput || !loginStatus) {
+  const passwordInput =
+    getEl("passwordInput");
+
+
+  if (!emailInput || !passwordInput) {
     return;
   }
 
-  const email = emailInput.value.trim();
-  const password = passwordInput.value;
 
-  loginStatus.textContent = "";
+  const email =
+    emailInput.value.trim();
+
+
+  const password =
+    passwordInput.value;
+
 
   if (!email || !password) {
 
-    loginStatus.textContent =
-      "ایمیل و رمز را وارد کن.";
-
-    loginStatus.style.color = "#ff9d9d";
+    showLoginStatus(
+      "ایمیل و رمز را وارد کن."
+    );
 
     return;
   }
 
 
-  loginStatus.textContent = "در حال ورود...";
+  showLoginStatus(
+    "در حال ورود..."
+  );
 
-  loginStatus.style.color = "#a99da5";
 
-
-  const { data, error } =
+  const {
+    data,
+    error
+  } =
     await db.auth.signInWithPassword({
-      email,
-      password
+
+      email: email,
+
+      password: password
+
     });
 
 
   if (error) {
 
-    console.error(error);
+    console.error(
+      "Login error:",
+      error
+    );
 
-    loginStatus.textContent =
-      "ورود ناموفق بود. ایمیل یا رمز را بررسی کن.";
 
-    loginStatus.style.color = "#ff9d9d";
+    showLoginStatus(
+      "ورود ناموفق بود. ایمیل یا رمز را بررسی کن."
+    );
+
 
     return;
   }
 
 
-  currentUser = data.user;
+  currentUser =
+    data.user;
 
 
-  loginStatus.textContent =
-    "ورود موفق بود ❤️";
+  showLoginStatus(
+    "ورود موفق بود ❤️",
+    true
+  );
 
-  loginStatus.style.color = "#9dffbc";
+
+  updateLoginUI(
+    currentUser
+  );
 
 
-  updateLoginUI(currentUser);
+  emailInput.value = "";
+
+  passwordInput.value = "";
+
 
   await loadMessages();
+
 }
 
 
-/* =========================================================
-   LOAD MESSAGES
-   ========================================================= */
+/* ================= LOGOUT ================= */
+
+async function logoutUser() {
+
+  const {
+    error
+  } =
+    await db.auth.signOut();
+
+
+  if (error) {
+
+    console.error(
+      "Logout error:",
+      error
+    );
+
+
+    showStatus(
+      "خروج انجام نشد.",
+      false
+    );
+
+
+    return;
+  }
+
+
+  currentUser = null;
+
+
+  updateLoginUI(null);
+
+
+  const notesList =
+    getEl("notesList");
+
+
+  const noteCount =
+    getEl("noteCount");
+
+
+  if (notesList) {
+
+    notesList.innerHTML = `
+      <div class="empty">
+        برای دیدن یادداشت‌های ما وارد شوید 🌙
+      </div>
+    `;
+
+  }
+
+
+  if (noteCount) {
+
+    noteCount.textContent =
+      "0 یادداشت";
+
+  }
+
+
+  showLoginStatus(
+    ""
+  );
+
+}
+
+
+/* ================= LOAD MESSAGES ================= */
 
 async function loadMessages() {
 
-  const notesList = getEl("notesList");
-  const noteCount = getEl("noteCount");
+  const notesList =
+    getEl("notesList");
+
+
+  const noteCount =
+    getEl("noteCount");
+
 
   if (!notesList || !noteCount) {
     return;
   }
 
 
-  const { data, error } = await db
-    .from("messages")
-    .select("*")
-    .order("created_at", {
-      ascending: true
-    });
+  notesList.innerHTML = `
+    <div class="empty">
+      در حال بارگذاری یادداشت‌ها... 🌙
+    </div>
+  `;
+
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("messages")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending: true
+        }
+      );
 
 
   if (error) {
 
-    console.error(error);
+    console.error(
+      "Load messages error:",
+      error
+    );
+
+
+    notesList.innerHTML = `
+      <div class="empty">
+        برای دیدن یادداشت‌ها وارد حساب شوید 🌙
+      </div>
+    `;
+
+
+    noteCount.textContent =
+      "0 یادداشت";
+
 
     return;
   }
@@ -248,32 +518,40 @@ async function loadMessages() {
       </div>
     `;
 
+
     return;
   }
 
 
   notesList.innerHTML =
-    data.map(message => `
+    data
+      .map(
+        message => `
 
-      <div class="note-card">
+          <div class="note-card">
 
-        <div class="note-date">
-          ${escapeHtml(message.sender || "❤️")}
-        </div>
+            <div class="note-date">
+              ${escapeHtml(
+                message.sender || "❤️"
+              )}
+            </div>
 
-        <div class="note-text">
-          ${escapeHtml(message.content || "")}
-        </div>
+            <div class="note-text">
+              ${escapeHtml(
+                message.content || ""
+              )}
+            </div>
 
-      </div>
+          </div>
 
-    `).join("");
+        `
+      )
+      .join("");
+
 }
 
 
-/* =========================================================
-   SAVE MESSAGE
-   ========================================================= */
+/* ================= SAVE MESSAGE ================= */
 
 async function saveMessage() {
 
@@ -288,7 +566,9 @@ async function saveMessage() {
   }
 
 
-  const noteInput = getEl("noteInput");
+  const noteInput =
+    getEl("noteInput");
+
 
   if (!noteInput) {
     return;
@@ -306,35 +586,58 @@ async function saveMessage() {
       false
     );
 
+
     return;
   }
 
 
-  const sender =
+  let sender =
+    "Mori ❤️";
+
+
+  const email =
     currentUser.email
-      ?.toLowerCase()
-      .includes("narges")
-      ? "Narges ❤️"
-      : "Mori ❤️";
+      ? currentUser.email.toLowerCase()
+      : "";
 
 
-  const { error } =
+  if (
+    email.includes("narges")
+  ) {
+
+    sender =
+      "Narges ❤️";
+
+  }
+
+
+  const {
+    error
+  } =
     await db
       .from("messages")
       .insert({
+
         content: text,
+
         sender: sender
+
       });
 
 
   if (error) {
 
-    console.error(error);
+    console.error(
+      "Save message error:",
+      error
+    );
+
 
     showStatus(
       "ذخیره انجام نشد.",
       false
     );
+
 
     return;
   }
@@ -344,59 +647,107 @@ async function saveMessage() {
 
 
   showStatus(
-    "یادداشت آنلاین ذخیره شد ❤️☁️"
+    "یادداشت آنلاین ذخیره شد ❤️☁️",
+    true
   );
 
 
   await loadMessages();
+
 }
 
 
-/* =========================================================
-   ESCAPE HTML
-   ========================================================= */
+/* ================= ESCAPE HTML ================= */
 
 function escapeHtml(value) {
 
   return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
 }
 
 
-/* =========================================================
-   INITIALIZE
-   ========================================================= */
+/* ================= AUTH STATE ================= */
+
+function setupAuthListener() {
+
+  db.auth.onAuthStateChange(
+    async (_event, session) => {
+
+      currentUser =
+        session?.user || null;
+
+
+      updateLoginUI(
+        currentUser
+      );
+
+
+      if (currentUser) {
+
+        await loadMessages();
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ================= INITIALIZATION ================= */
 
 document.addEventListener(
   "DOMContentLoaded",
   async () => {
 
+
     /* Countdown */
 
-    updateCountdown();
-
-    setInterval(
-      updateCountdown,
-      1000
-    );
+    startCountdown();
 
 
-    /* Day */
+    /* Day number */
 
     updateDayNumber();
 
 
     /* Year */
 
-    const yearEl = getEl("year");
+    const yearEl =
+      getEl("year");
+
 
     if (yearEl) {
+
       yearEl.textContent =
-        new Date().getFullYear();
+        new Date()
+          .getFullYear();
+
     }
 
 
@@ -404,6 +755,7 @@ document.addEventListener(
 
     const loginButton =
       getEl("loginBtn");
+
 
     if (loginButton) {
 
@@ -415,10 +767,27 @@ document.addEventListener(
     }
 
 
+    /* Logout button */
+
+    const logoutButton =
+      getEl("logoutBtn");
+
+
+    if (logoutButton) {
+
+      logoutButton.addEventListener(
+        "click",
+        logoutUser
+      );
+
+    }
+
+
     /* Save button */
 
     const saveButton =
       getEl("saveBtn");
+
 
     if (saveButton) {
 
@@ -430,10 +799,11 @@ document.addEventListener(
     }
 
 
-    /* Enter key for password */
+    /* Enter key on password */
 
     const passwordInput =
       getEl("passwordInput");
+
 
     if (passwordInput) {
 
@@ -441,8 +811,12 @@ document.addEventListener(
         "keydown",
         event => {
 
-          if (event.key === "Enter") {
+          if (
+            event.key === "Enter"
+          ) {
+
             loginUser();
+
           }
 
         }
@@ -453,13 +827,28 @@ document.addEventListener(
 
     /* Check existing session */
 
-    const { data } =
+    const {
+      data,
+      error
+    } =
       await db.auth.getSession();
 
 
-    currentUser =
-      data.session?.user || null;
+    if (error) {
 
+      console.error(
+        "Session error:",
+        error
+      );
+
+    }
+
+
+    currentUser =
+      data?.session?.user || null;
+
+
+    /* Update UI */
 
     updateLoginUI(
       currentUser
@@ -475,28 +864,9 @@ document.addEventListener(
     }
 
 
-    /* Auth state listener */
+    /* Listen for login/logout */
 
-    db.auth.onAuthStateChange(
-      async (_event, session) => {
-
-        currentUser =
-          session?.user || null;
-
-
-        updateLoginUI(
-          currentUser
-        );
-
-
-        if (currentUser) {
-
-          await loadMessages();
-
-        }
-
-      }
-    );
+    setupAuthListener();
 
   }
 );
