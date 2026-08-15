@@ -212,6 +212,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (currentUser) {
       loadMessages();
+      updateCountdown();
+setInterval(updateCountdown, 1000);
     }
   });
 });
