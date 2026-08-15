@@ -1100,6 +1100,94 @@ footer {
 
 @media (max-width: 650px) {
 
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+  padding: 40px 0 15px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.32);
+  font-size: 11px;
+}
+
+/* ================= FOOTER MESSAGE ================= */
+
+.footer-love {
+  margin-bottom: 20px;
+  opacity: 0.85;
+}
+
+/* ================= FOOTER MARQUEE ================= */
+
+.footer-marquee {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+.footer-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+
+  animation: moriMarquee 30s linear infinite;
+}
+
+.footer-marquee-content {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+
+  flex-shrink: 0;
+  padding-right: 90px;
+}
+
+.footer-marquee-content span {
+  display: block;
+  flex-shrink: 0;
+
+  color: rgba(247, 240, 243, 0.65);
+
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1.8;
+
+  white-space: nowrap;
+}
+
+/* ================= MOVEMENT ================= */
+
+@keyframes moriMarquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 650px) {
+
   footer {
     padding: 30px 0 12px;
   }
@@ -1119,45 +1207,9 @@ footer {
   }
 
   .footer-marquee-track {
-    animation-duration: 28s;
+    animation-duration: 25s;
   }
 }
-
-@keyframes footerMarquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-33.333%);
-  }
-}
-
-/* Mobile */
-
-@media (max-width: 650px) {
-
-  footer {
-    padding-bottom: 12px;
-  }
-
-  .footer-love {
-    font-size: 10px;
-    margin-bottom: 15px;
-  }
-
-  .footer-marquee-track {
-    gap: 60px;
-    animation-duration: 28s;
-  }
-
-  .footer-marquee-track span {
-    font-size: 9px;
-  }
-}
-}
-}
-
 
 /* =========================================================
    VERY SMALL PHONES
