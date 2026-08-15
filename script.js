@@ -214,6 +214,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       loadMessages();
       updateCountdown();
 setInterval(updateCountdown, 1000);
+      const TARGET_DATE = new Date("2026-09-12T12:15:00+02:00");
     }
   });
 });
