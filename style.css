@@ -840,3 +840,712 @@ footer::before {
   }
 
 }
+/* =========================================================
+   MORI × NARGES — FINAL RESPONSIVE LAYER
+   ONLY RESPONSIVE — NO APP LOGIC CHANGED
+   ========================================================= */
+
+/* ---------- TABLETS ---------- */
+
+@media (max-width: 900px) {
+
+  .app {
+    width: min(100% - 28px, 1050px);
+  }
+
+  .hero {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .countdown {
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .card {
+    padding: 26px;
+  }
+
+  .section-head {
+    gap: 12px;
+  }
+
+  textarea {
+    width: 100%;
+  }
+
+  footer {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE — 650px
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  html {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+
+    background-attachment: scroll;
+    background-position: center top;
+  }
+
+
+  /* ---------- APP ---------- */
+
+  .app {
+    width: calc(100% - 20px);
+    max-width: none;
+
+    margin: 0 auto;
+
+    padding:
+      22px 0
+      calc(28px + env(safe-area-inset-bottom));
+  }
+
+
+  /* ---------- HERO ---------- */
+
+  .hero {
+    width: 100%;
+
+    padding:
+      12px 4px 34px;
+  }
+
+  .tiny {
+    max-width: 100%;
+
+    font-size: 9px;
+    line-height: 1.7;
+
+    letter-spacing: 1px;
+
+    white-space: normal;
+  }
+
+  .hero h1 {
+    font-size: clamp(34px, 11vw, 46px);
+
+    line-height: 1.15;
+
+    letter-spacing: -1.5px;
+
+    white-space: nowrap;
+  }
+
+  .hero h1 span {
+    margin: 0 4px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    margin:
+      14px 0
+      25px;
+  }
+
+
+  /* ---------- COUNTDOWN ---------- */
+
+  .countdown {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+
+    max-width: 430px;
+  }
+
+  .countdown > div {
+    width: 100%;
+    min-width: 0;
+
+    padding:
+      16px 7px;
+
+    border-radius: 17px;
+  }
+
+  .countdown strong {
+    font-size: clamp(28px, 9vw, 38px);
+
+    line-height: 1;
+  }
+
+  .countdown small {
+    margin-top: 7px;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+  }
+
+  .date {
+    margin-top: 17px;
+
+    font-size: 11px;
+
+    line-height: 1.8;
+  }
+
+
+  /* ---------- CARDS ---------- */
+
+  .card {
+    width: 100%;
+
+    margin-top: 18px;
+
+    padding:
+      20px 14px;
+
+    border-radius: 21px;
+  }
+
+
+  /* ---------- SECTION HEADER ---------- */
+
+  .section-head {
+    width: 100%;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 10px;
+  }
+
+  .eyebrow {
+    font-size: 9px;
+
+    letter-spacing: 1.4px;
+  }
+
+  h2 {
+    font-size: 20px;
+
+    line-height: 1.5;
+
+    margin-top: 4px;
+  }
+
+  .day-pill,
+  .count {
+    flex-shrink: 0;
+
+    padding:
+      6px 9px;
+
+    font-size: 9px;
+
+    white-space: nowrap;
+  }
+
+
+  /* ---------- TEXTAREA ---------- */
+
+  textarea {
+    width: 100%;
+
+    min-width: 0;
+
+    min-height: 135px;
+
+    padding: 14px;
+
+    border-radius: 15px;
+
+    font-size: 14px;
+
+    line-height: 1.9;
+  }
+
+
+  /* ---------- ACTIONS ---------- */
+
+  .actions {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 9px;
+
+    margin-top: 12px;
+  }
+
+  .actions button {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 12px 15px;
+
+    font-size: 13px;
+  }
+
+  #status {
+    display: block;
+
+    width: 100%;
+
+    margin-top: 2px;
+
+    text-align: center;
+
+    font-size: 11px;
+
+    line-height: 1.7;
+  }
+
+
+  /* ---------- FIREBASE LOGIN PANEL ---------- */
+
+  #firebaseLoginPanel {
+    width: 100% !important;
+
+    margin-bottom: 15px !important;
+
+    padding: 15px !important;
+
+    border-radius: 17px !important;
+
+    overflow: hidden;
+  }
+
+  #firebaseLoginPanel input {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    font-size: 14px !important;
+
+    padding: 12px !important;
+
+    box-sizing: border-box !important;
+  }
+
+  #firebaseLoginPanel button {
+    max-width: 100%;
+
+    min-height: 44px;
+
+    font-size: 13px;
+  }
+
+  #loginFormArea {
+    width: 100%;
+  }
+
+  #loggedInArea {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+  }
+
+  #loggedInArea button {
+    margin-right: 0 !important;
+  }
+
+
+  /* ---------- MEMORY ARCHIVE ---------- */
+
+  .notes-list {
+    width: 100%;
+
+    gap: 9px;
+  }
+
+  .note-card {
+    width: 100%;
+
+    padding: 15px;
+
+    border-radius: 16px;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+  }
+
+  .note-card .note-text {
+    font-size: 13px;
+
+    line-height: 1.9;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+  }
+
+  .empty {
+    padding: 22px 14px;
+
+    font-size: 12px;
+
+    line-height: 1.9;
+  }
+
+
+  /* ---------- FOOTER ---------- */
+
+  footer {
+    width: 100%;
+
+    padding:
+      32px 8px
+      calc(22px + env(safe-area-inset-bottom));
+
+    font-size: 9px;
+
+    line-height: 2;
+  }
+
+  footer .footer-message {
+    width: 100%;
+
+    padding: 0 4px;
+
+    gap: 4px;
+
+    font-size: 9px;
+
+    line-height: 1.9;
+
+    overflow-wrap: anywhere;
+  }
+
+  footer .footer-message p {
+    max-width: 100%;
+
+    margin: 0 auto;
+
+    overflow-wrap: anywhere;
+
+    word-break: normal;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES — 480px
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .app {
+    width: calc(100% - 16px);
+  }
+
+  .hero {
+    padding-top: 8px;
+  }
+
+  .tiny {
+    font-size: 8px;
+
+    letter-spacing: 0.8px;
+  }
+
+  .hero h1 {
+    font-size: clamp(31px, 10.5vw, 40px);
+  }
+
+  .subtitle {
+    font-size: 12px;
+
+    margin-bottom: 22px;
+  }
+
+  .countdown {
+    gap: 7px;
+  }
+
+  .countdown > div {
+    padding: 15px 5px;
+
+    border-radius: 15px;
+  }
+
+  .countdown strong {
+    font-size: clamp(26px, 9vw, 34px);
+  }
+
+  .countdown small {
+    font-size: 9px;
+  }
+
+  .card {
+    padding: 17px 12px;
+
+    border-radius: 19px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .eyebrow {
+    font-size: 8px;
+
+    letter-spacing: 1.1px;
+  }
+
+  .day-pill,
+  .count {
+    font-size: 8px;
+
+    padding: 5px 8px;
+  }
+
+  textarea {
+    min-height: 125px;
+
+    padding: 13px;
+
+    font-size: 13px;
+  }
+
+  .actions button {
+    min-height: 46px;
+
+    font-size: 12px;
+  }
+
+  #firebaseLoginPanel {
+    padding: 13px !important;
+  }
+
+  footer .footer-message {
+    font-size: 8px;
+
+    line-height: 1.85;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES — 380px
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .app {
+    width: calc(100% - 12px);
+  }
+
+  .hero h1 {
+    font-size: 30px;
+
+    letter-spacing: -1px;
+  }
+
+  .hero h1 span {
+    margin: 0 2px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+  }
+
+  .countdown {
+    gap: 6px;
+  }
+
+  .countdown > div {
+    padding:
+      14px 4px;
+
+    border-radius: 14px;
+  }
+
+  .countdown strong {
+    font-size: 25px;
+  }
+
+  .countdown small {
+    font-size: 8px;
+  }
+
+  .date {
+    font-size: 10px;
+  }
+
+  .card {
+    padding:
+      15px 10px;
+
+    border-radius: 17px;
+  }
+
+  .section-head {
+    gap: 7px;
+  }
+
+  h2 {
+    font-size: 17px;
+  }
+
+  .day-pill,
+  .count {
+    font-size: 8px;
+
+    padding: 5px 7px;
+  }
+
+  textarea {
+    min-height: 120px;
+
+    font-size: 12px;
+  }
+
+  footer {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  footer .footer-message {
+    font-size: 7.5px;
+  }
+
+}
+
+
+/* =========================================================
+   LANDSCAPE PHONES
+   ========================================================= */
+
+@media (max-height: 520px) and (orientation: landscape) {
+
+  .app {
+    padding-top: 15px;
+  }
+
+  .hero {
+    padding-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .subtitle {
+    margin:
+      8px 0
+      18px;
+  }
+
+  .countdown {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+
+    max-width: 650px;
+  }
+
+  .countdown > div {
+    padding: 12px 5px;
+  }
+
+  .countdown strong {
+    font-size: 28px;
+  }
+
+  .countdown small {
+    margin-top: 5px;
+
+    font-size: 9px;
+  }
+
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+   Prevent hover effects from causing weird movement
+   ========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .countdown > div:hover,
+  .note-card:hover,
+  button:hover {
+    transform: none;
+  }
+
+}
+
+
+/* =========================================================
+   SAFE WIDTH PROTECTION
+   ========================================================= */
+
+img,
+video,
+iframe,
+canvas {
+  max-width: 100%;
+}
+
+input,
+textarea,
+button {
+  max-width: 100%;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY / REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+
+}
