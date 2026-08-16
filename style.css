@@ -40,39 +40,20 @@ body {
   font-family: "Vazirmatn", sans-serif;
   color: var(--text);
 
-  background:
-    linear-gradient(
-      rgba(13, 10, 16, 0.72),
-      rgba(13, 10, 16, 0.82)
-    ),
-    url("couple-bg.jpg") center center / cover fixed no-repeat;
-
-  position: relative;
-}
+ background: #0d0a10;
+position: relative;
 
 
 /* =========================================================
    CINEMATIC OVERLAY
    ========================================================= */
 
-body::before {
-  content: "";
-
-  position: fixed;
-  inset: 0;
-
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      circle at 50% 35%,
-      transparent 20%,
-      rgba(0, 0, 0, 0.25) 60%,
-      rgba(0, 0, 0, 0.62) 100%
-    );
-
-  z-index: 0;
-}
+background:
+  linear-gradient(
+    rgba(13, 10, 16, 0.72),
+    rgba(13, 10, 16, 0.82)
+  ),
+  url("couple-bg.jpg") center center / cover no-repeat;
 
 
 /* =========================================================
