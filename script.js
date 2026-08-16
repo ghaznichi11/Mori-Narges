@@ -870,3 +870,4 @@ document.addEventListener(
 
   }
 );
+const VAPID_PUBLIC_KEY = "BO7EwkKI52w7GApI7qw0LVtj2yP6AaX7mbN6IRQbxe6w3qbOzdR7Rci45CEjuwkuHy19GVSwAx8ngAgyhLkjcHM";
