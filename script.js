@@ -523,33 +523,56 @@ async function loadMessages() {
   }
 
 
-  notesList.innerHTML =
-    data
-      .map(
-        message => `
+ const isAdmin =
+  currentUser?.email?.toLowerCase() ===
+  "ghazniboy0093@gmail.com";
 
-          <div class="note-card">
+notesList.innerHTML =
+  data
+    .map(
+      message => `
 
-            <div class="note-date">
-              ${escapeHtml(
-                message.sender || "❤️"
-              )}
-            </div>
+        <div class="note-card">
 
-            <div class="note-text">
-              ${escapeHtml(
-                message.content || ""
-              )}
-            </div>
+          <div class="note-date">
+            ${escapeHtml(
+              message.sender || "❤️"
+            )}
+
+            ${
+              isAdmin
+                ? `
+                  <button
+                    onclick="deleteMessage(${message.id})"
+                    style="
+                      float:left;
+                      border:none;
+                      background:none;
+                      color:#ff6b81;
+                      cursor:pointer;
+                      font-size:18px;
+                    "
+                    title="حذف یادداشت"
+                  >
+                    🗑️
+                  </button>
+                `
+                : ""
+            }
 
           </div>
 
-        `
-      )
-      .join("");
+          <div class="note-text">
+            ${escapeHtml(
+              message.content || ""
+            )}
+          </div>
 
-}
+        </div>
 
+    `
+    )
+    .join("");
 
 /* ================= SAVE MESSAGE ================= */
 
@@ -1099,3 +1122,54 @@ document.addEventListener(
 
   }
 );
+   /* ================= DELETE MESSAGE ================= */
+
+async function deleteMessage(messageId) {
+
+  if (!currentUser) {
+    alert("اول وارد حساب خودت شو ❤️");
+    return;
+  }
+
+  const isAdmin =
+    currentUser.email?.toLowerCase() ===
+    "ghazniboy0093@gmail.com";
+
+  if (!isAdmin) {
+    alert("اجازه حذف این یادداشت را نداری.");
+    return;
+  }
+
+  const confirmed =
+    confirm("مطمئنی می‌خواهی این یادداشت را حذف کنی؟");
+
+  if (!confirmed) return;
+
+  const { error } =
+    await db
+      .from("messages")
+      .delete()
+      .eq("id", messageId);
+
+  if (error) {
+
+    console.error(
+      "Delete message error:",
+      error
+    );
+
+    alert(
+      "حذف انجام نشد:\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+  showStatus(
+    "یادداشت حذف شد 🗑️❤️",
+    true
+  );
+
+  await loadMessages();
+}
