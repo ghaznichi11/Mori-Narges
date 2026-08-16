@@ -1051,9 +1051,10 @@ async function enableNotifications() {
     button.textContent =
       "🔔 فعال کردن اعلان‌ها";
 
-    alert(
-      "فعال‌سازی اعلان‌ها انجام نشد. Console را بررسی کن."
-    );
+   alert(
+  "خطای واقعی:\n\n" +
+  (error?.message || String(error))
+);
 
   }
 
