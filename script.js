@@ -871,3 +871,212 @@ document.addEventListener(
   }
 );
 const VAPID_PUBLIC_KEY = "BO7EwkKI52w7GApI7qw0LVtj2yP6AaX7mbN6IRQbxe6w3qbOzdR7Rci45CEjuwkuHy19GVSwAx8ngAgyhLkjcHM";
+/* ================= PUSH NOTIFICATIONS ================= */
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+
+  const base64 = (base64String + padding)
+    .replace(/-/g, "+")
+    .replace(/_/g, "/");
+
+  const rawData = atob(base64);
+
+  return Uint8Array.from(
+    [...rawData].map(char => char.charCodeAt(0))
+  );
+}
+
+
+async function enableNotifications() {
+
+  const button = getEl("notificationBtn");
+
+  if (!button) {
+    console.error("notificationBtn not found");
+    return;
+  }
+
+  if (!currentUser) {
+    alert("اول وارد حساب خودت شو ❤️");
+    return;
+  }
+
+  if (!("Notification" in window)) {
+    alert("این مرورگر از Notification پشتیبانی نمی‌کند.");
+    return;
+  }
+
+  if (!("serviceWorker" in navigator)) {
+    alert("Service Worker در این مرورگر فعال نیست.");
+    return;
+  }
+
+  if (!("PushManager" in window)) {
+    alert("Push Notification در این مرورگر پشتیبانی نمی‌شود.");
+    return;
+  }
+
+  try {
+
+    button.disabled = true;
+    button.textContent = "در حال فعال‌سازی...";
+
+    /* 1. Ask notification permission */
+
+    const permission =
+      await Notification.requestPermission();
+
+    if (permission !== "granted") {
+
+      button.disabled = false;
+      button.textContent = "🔔 فعال کردن اعلان‌ها";
+
+      alert("اجازه اعلان‌ها داده نشد.");
+
+      return;
+    }
+
+
+    /* 2. Get Service Worker */
+
+    const registration =
+      await navigator.serviceWorker.ready;
+
+
+    /* 3. Create Push Subscription */
+
+    let subscription =
+      await registration.pushManager.getSubscription();
+
+
+    if (!subscription) {
+
+      subscription =
+        await registration.pushManager.subscribe({
+
+          userVisibleOnly: true,
+
+          applicationServerKey:
+            urlBase64ToUint8Array(
+              VAPID_PUBLIC_KEY
+            )
+
+        });
+
+    }
+
+
+    /* 4. Convert subscription */
+
+    const subscriptionJson =
+      subscription.toJSON();
+
+
+    const endpoint =
+      subscriptionJson.endpoint;
+
+    const p256dh =
+      subscriptionJson.keys?.p256dh;
+
+    const auth =
+      subscriptionJson.keys?.auth;
+
+
+    if (!endpoint || !p256dh || !auth) {
+
+      throw new Error(
+        "Push subscription keys are missing."
+      );
+
+    }
+
+
+    /* 5. Save subscription in Supabase */
+
+    const { error } =
+      await db
+        .from("push_subscriptions")
+        .upsert(
+          {
+            user_id: currentUser.id,
+            endpoint: endpoint,
+            p256dh: p256dh,
+            auth: auth
+          },
+          {
+            onConflict: "endpoint"
+          }
+        );
+
+
+    if (error) {
+
+      console.error(
+        "Save push subscription error:",
+        error
+      );
+
+      throw error;
+    }
+
+
+    /* 6. Success */
+
+    button.disabled = false;
+
+    button.textContent =
+      "🔔 اعلان‌ها فعال هستند ❤️";
+
+    showStatus(
+      "اعلان‌ها با موفقیت فعال شدند ❤️🔔",
+      true
+    );
+
+    console.log(
+      "Push subscription saved successfully ❤️",
+      subscriptionJson
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Notification setup error:",
+      error
+    );
+
+    button.disabled = false;
+
+    button.textContent =
+      "🔔 فعال کردن اعلان‌ها";
+
+    alert(
+      "فعال‌سازی اعلان‌ها انجام نشد. Console را بررسی کن."
+    );
+
+  }
+
+}
+
+
+/* ================= NOTIFICATION BUTTON ================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const notificationButton =
+      getEl("notificationBtn");
+
+    if (notificationButton) {
+
+      notificationButton.addEventListener(
+        "click",
+        enableNotifications
+      );
+
+    }
+
+  }
+);
