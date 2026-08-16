@@ -994,22 +994,40 @@ async function enableNotifications() {
 
     /* 5. Save subscription in Supabase */
 
-    const { error } =
-      await db
-        .from("push_subscriptions")
-        .upsert(
-          {
-            user_id: currentUser.id,
-            endpoint: endpoint,
-            p256dh: p256dh,
-            auth: auth
-          },
-          {
-            onConflict: "endpoint"
-          }
-        );
+  /* 5. Save subscription in Supabase */
 
+const {
+  data: { user },
+  error: userError
+} = await db.auth.getUser();
 
+if (userError || !user) {
+  throw new Error("کاربر وارد حساب نشده است.");
+}
+
+const { error } =
+  await db
+    .from("push_subscriptions")
+    .upsert(
+      {
+        user_id: user.id,
+        endpoint: endpoint,
+        p256dh: p256dh,
+        auth: auth
+      },
+      {
+        onConflict: "endpoint"
+      }
+    );
+
+if (error) {
+  console.error(
+    "Save push subscription error:",
+    error
+  );
+
+  throw error;
+}
     if (error) {
 
       console.error(
