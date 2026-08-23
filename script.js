@@ -509,6 +509,19 @@ async function loadMessages() {
               message.created_at
             );
 
+          const photoHtml =
+            message.photo_url
+              ? `
+                <div class="note-photo">
+                  <img
+                    src="${escapeHtml(message.photo_url)}"
+                    alt="عکس یادداشت"
+                    loading="lazy"
+                  >
+                </div>
+              `
+              : "";
+
           return `
             <div class="note-card">
 
@@ -535,6 +548,8 @@ async function loadMessages() {
                   message.content || ""
                 )}
               </div>
+
+              ${photoHtml}
 
             </div>
           `;
