@@ -613,7 +613,7 @@ async function saveMessage() {
     const {
       error: uploadError
     } = await db.storage
-      .from("memory-photos")
+      .from("note-photos")
       .upload(
         filePath,
         file,
@@ -641,7 +641,7 @@ async function saveMessage() {
     const {
       data: publicUrlData
     } = db.storage
-      .from("memory-photos")
+      .from("note-photos")
       .getPublicUrl(filePath);
 
     photoUrl =
