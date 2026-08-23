@@ -75,7 +75,7 @@ function formatNoteDate(timestamp, fallbackDate) {
 
   if (!date) return "زمان ثبت در دسترس نیست";
 
-  return new Intl.DateTimeFormat("fa-IR-u-ca-gregory", {
+  return new Intl.DateTimeFormat("fa-IR", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -429,19 +429,16 @@ async function saveTodayMemory() {
         existingDoc.ref,
         {
           [fieldName]: text,
-          [
-            currentUser.uid === MORI_UID
-              ? "moriUpdatedAt"
-              : "nargesUpdatedAt"
-          ]: serverTimestamp(),
+          [currentUser.uid === MORI_UID
+            ? "moriUpdatedAt"
+            : "nargesUpdatedAt"]:
+            serverTimestamp(),
           updatedAt: serverTimestamp()
         }
       );
     }
 
-    showStatus(
-      "یادداشت آنلاین ذخیره شد ❤️☁️"
-    );
+    showStatus("یادداشت آنلاین ذخیره شد ❤️☁️");
 
     await loadTodayMemory();
   } catch (error) {
@@ -560,6 +557,17 @@ document.addEventListener(
       loginButton.addEventListener(
         "click",
         loginUser
+      );
+    }
+
+    // Logout button
+    const logoutButton =
+      getEl("logoutBtn");
+
+    if (logoutButton) {
+      logoutButton.addEventListener(
+        "click",
+        logoutUser
       );
     }
 
