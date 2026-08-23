@@ -188,20 +188,17 @@ async function logoutUser() {
     );
 
     await signOut(firebaseAuth);
+
+    updateLoginUI(null);
+
+    const noteInput = getEl("noteInput");
+
+    if (noteInput) {
+      noteInput.value = "";
+    }
+
   } catch (error) {
     console.error(error);
-  }
-}
-
-function updateLoginUI(user) {
-  const loginScreen = getEl("loginScreen");
-
-  if (!loginScreen) return;
-
-  if (user) {
-    loginScreen.style.display = "none";
-  } else {
-    loginScreen.style.display = "flex";
   }
 }
 
