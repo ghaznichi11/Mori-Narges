@@ -1697,3 +1697,16 @@ textarea {
     font-size: 22px;
   }
 }
+   .note-photo {
+  margin-top: 14px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.note-photo img {
+  display: block;
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+}
