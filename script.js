@@ -549,63 +549,120 @@ async function loadMessages() {
 async function saveMessage() {
 
   if (!currentUser) {
-
     showStatus(
       "اول وارد حساب خودت شو ❤️",
       false
     );
-
     return;
   }
 
-  const noteInput =
-    getEl("noteInput");
+  const noteInput = getEl("noteInput");
+  const photoInput = getEl("photoInput");
 
   if (!noteInput) {
     return;
   }
 
-  const text =
-    noteInput.value.trim();
+  const text = noteInput.value.trim();
 
   if (!text) {
-
     showStatus(
       "اول چیزی برای امروز بنویس ❤️",
       false
     );
-
     return;
   }
 
-  let sender =
-    "Mori ❤️";
+  let sender = "Mori ❤️";
 
   const email =
     currentUser.email
       ? currentUser.email.toLowerCase()
       : "";
 
+  if (email.includes("narges")) {
+    sender = "Narges ❤️";
+  }
+
+  let photoUrl = null;
+
+  /* ================= PHOTO UPLOAD ================= */
+
   if (
-    email.includes("narges")
+    photoInput &&
+    photoInput.files &&
+    photoInput.files.length > 0
   ) {
 
-    sender =
-      "Narges ❤️";
+    const file = photoInput.files[0];
+
+    const fileExt =
+      file.name.split(".").pop();
+
+    const fileName =
+      `${Date.now()}-${crypto.randomUUID()}.${fileExt}`;
+
+    const filePath =
+      `memories/${fileName}`;
+
+    showStatus(
+      "عکس در حال آپلود است... 📷",
+      true
+    );
+
+    const {
+      error: uploadError
+    } = await db.storage
+      .from("memory-photos")
+      .upload(
+        filePath,
+        file,
+        {
+          cacheControl: "3600",
+          upsert: false
+        }
+      );
+
+    if (uploadError) {
+
+      console.error(
+        "Photo upload error:",
+        uploadError
+      );
+
+      showStatus(
+        "آپلود عکس انجام نشد.",
+        false
+      );
+
+      return;
+    }
+
+    const {
+      data: publicUrlData
+    } = db.storage
+      .from("memory-photos")
+      .getPublicUrl(filePath);
+
+    photoUrl =
+      publicUrlData.publicUrl;
   }
+
+  /* ================= SAVE MESSAGE ================= */
 
   const {
     error
-  } =
-    await db
-      .from("messages")
-      .insert({
+  } = await db
+    .from("messages")
+    .insert({
 
-        content: text,
+      content: text,
 
-        sender: sender
+      sender: sender,
 
-      });
+      photo_url: photoUrl
+
+    });
 
   if (error) {
 
@@ -622,16 +679,28 @@ async function saveMessage() {
     return;
   }
 
+  /* ================= RESET FORM ================= */
+
   noteInput.value = "";
 
+  if (photoInput) {
+    photoInput.value = "";
+  }
+
+  const photoName =
+    getEl("photoName");
+
+  if (photoName) {
+    photoName.textContent = "";
+  }
+
   showStatus(
-    "یادداشت آنلاین ذخیره شد ❤️☁️",
+    "یادداشت و عکس با موفقیت ذخیره شد ❤️📷",
     true
   );
 
   await loadMessages();
 }
-
 
 /* ================= ESCAPE HTML ================= */
 
