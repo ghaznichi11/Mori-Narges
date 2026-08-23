@@ -462,7 +462,7 @@ async function loadMessages() {
       .order(
         "created_at",
         {
-          ascending: true
+          ascending: false
         }
       );
 
